@@ -26,6 +26,7 @@ CREATE TABLE users (
     password_hash TEXT NOT NULL,
     display_name TEXT NOT NULL,
     status user_status NOT NULL DEFAULT 'active',
+    role TEXT NOT NULL DEFAULT 'USER' CHECK (role IN ('USER', 'ADMIN')),
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     deleted_at TIMESTAMPTZ,
