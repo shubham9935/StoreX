@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const folderRoutes = require('./routes/folderRoutes');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/folders', folderRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found.' });

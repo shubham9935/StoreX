@@ -10,6 +10,7 @@ The initial schema is in [database/schema.sql](database/schema.sql), with design
 The database stores users, folders, file metadata, immutable file versions, permissions, and audit logs. File bytes remain in object storage and are referenced by `storage_key`.
 
 - Step 6: User authentication and authorization implemented for the backend.
+- Step 7: Initial migrations, backend tests, and authenticated folder CRUD implemented.
 
 Completed Step 6: User Authentication & Authorization.
 
@@ -22,6 +23,8 @@ Completed Step 6: User Authentication & Authorization.
 - Role-based authorization with `USER` and `ADMIN`
 - Protected user route: `GET /api/auth/me`
 - Admin-only test route: `GET /api/admin/test`
+- Authenticated folder routes: `GET/POST /api/folders` and `GET/PATCH/DELETE /api/folders/:id`
+- Folder deletion is soft-delete and requires the folder to be empty.
 - Input validation and safe error handling
 - Environment-based configuration using `.env`
 - Backend project setup in `backend/`
@@ -32,6 +35,8 @@ Completed Step 6: User Authentication & Authorization.
 ### Notes
 - This step focuses only on authentication and authorization.
 - File upload, file download, S3 storage, and later project features are intentionally not implemented yet.
-- The project is now ready for further backend testing and Postman validation of the auth flow.
+- Run backend tests with `cd backend && npm test`.
+- Apply the initial database migration to an empty database with `cd backend && npm run db:migrate`.
+- The project is ready for file storage and sharing features after configuring PostgreSQL.
 
 
