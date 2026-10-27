@@ -55,3 +55,28 @@ test('folder creation rejects blank names before querying the database', async (
   assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), { message: 'Folder name is required.' });
 });
+
+test('file routes require authentication', async () => {
+  const response = await fetch(`${baseUrl}/api/files`);
+
+  assert.equal(response.status, 401);
+});
+
+test('file upload rejects requests without a file', async () => {
+  const response = await fetch(`${baseUrl}/api/files`, {
+    method: 'POST',
+    headers: authorizationHeader(),
+  });
+
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { message: 'A file is required in the "file" field.' });
+});
+
+test('file download rejects malformed identifiers before querying the database', async () => {
+  const response = await fetch(`${baseUrl}/api/files/not-a-uuid/download`, {
+    headers: authorizationHeader(),
+  });
+
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { message: 'File id must be a valid UUID.' });
+});

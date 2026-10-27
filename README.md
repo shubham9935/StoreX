@@ -11,6 +11,7 @@ The database stores users, folders, file metadata, immutable file versions, perm
 
 - Step 6: User authentication and authorization implemented for the backend.
 - Step 7: Initial migrations, backend tests, and authenticated folder CRUD implemented.
+- Step 8: S3-compatible file upload, listing, and download endpoints implemented.
 
 Completed Step 6: User Authentication & Authorization.
 
@@ -25,6 +26,8 @@ Completed Step 6: User Authentication & Authorization.
 - Admin-only test route: `GET /api/admin/test`
 - Authenticated folder routes: `GET/POST /api/folders` and `GET/PATCH/DELETE /api/folders/:id`
 - Folder deletion is soft-delete and requires the folder to be empty.
+- Authenticated file routes: `GET/POST /api/files` and `GET /api/files/:id/download`
+- Uploads are limited to 25 MB and require an `S3_BUCKET` configuration.
 - Input validation and safe error handling
 - Environment-based configuration using `.env`
 - Backend project setup in `backend/`
@@ -37,6 +40,7 @@ Completed Step 6: User Authentication & Authorization.
 - File upload, file download, S3 storage, and later project features are intentionally not implemented yet.
 - Run backend tests with `cd backend && npm test`.
 - Apply the initial database migration to an empty database with `cd backend && npm run db:migrate`.
-- The project is ready for file storage and sharing features after configuring PostgreSQL.
+- Configure PostgreSQL and S3-compatible storage in `backend/.env` before using folder or file operations.
+- File versioning, sharing permissions, and audit logging remain future work.
 
 
