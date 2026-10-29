@@ -80,3 +80,33 @@ test('file download rejects malformed identifiers before querying the database',
   assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), { message: 'File id must be a valid UUID.' });
 });
+
+test('file rename rejects malformed identifiers before querying the database', async () => {
+  const response = await fetch(`${baseUrl}/api/files/not-a-uuid`, {
+    method: 'PATCH',
+    headers: { ...authorizationHeader(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: 'renamed.txt' }),
+  });
+
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { message: 'File id must be a valid UUID.' });
+});
+
+test('file delete rejects malformed identifiers before querying the database', async () => {
+  const response = await fetch(`${baseUrl}/api/files/not-a-uuid`, {
+    method: 'DELETE',
+    headers: authorizationHeader(),
+  });
+
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { message: 'File id must be a valid UUID.' });
+});
+
+test('search rejects short queries before querying the database', async () => {
+  const response = await fetch(`${baseUrl}/api/search?q=a`, {
+    headers: authorizationHeader(),
+  });
+
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { message: 'Search query must contain at least 2 characters.' });
+});

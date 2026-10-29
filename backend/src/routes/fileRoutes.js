@@ -1,7 +1,14 @@
 const express = require('express');
 const multer = require('multer');
 const { requireAuth } = require('../middleware/auth');
-const { listFiles, uploadFile, downloadFile } = require('../controllers/fileController');
+const {
+  listFiles,
+  listRecentFiles,
+  uploadFile,
+  downloadFile,
+  renameFile,
+  deleteFile,
+} = require('../controllers/fileController');
 
 const router = express.Router();
 const receiveFile = multer({
@@ -10,6 +17,7 @@ const receiveFile = multer({
 }).single('file');
 
 router.use(requireAuth);
+router.get('/recent', listRecentFiles);
 router.get('/', listFiles);
 router.post('/', (req, res, next) => {
   receiveFile(req, res, (error) => {
@@ -24,6 +32,8 @@ router.post('/', (req, res, next) => {
     return next(error);
   });
 }, uploadFile);
+router.patch('/:id', renameFile);
+router.delete('/:id', deleteFile);
 router.get('/:id/download', downloadFile);
 
 module.exports = router;

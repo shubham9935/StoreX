@@ -26,7 +26,8 @@ Completed Step 6: User Authentication & Authorization.
 - Admin-only test route: `GET /api/admin/test`
 - Authenticated folder routes: `GET/POST /api/folders` and `GET/PATCH/DELETE /api/folders/:id`
 - Folder deletion is soft-delete and requires the folder to be empty.
-- Authenticated file routes: `GET/POST /api/files` and `GET /api/files/:id/download`
+- Authenticated file routes: `GET/POST /api/files`, `GET /api/files/recent`, `PATCH/DELETE /api/files/:id`, and `GET /api/files/:id/download`
+- Authenticated name search: `GET /api/search?q=...`
 - Uploads are limited to 25 MB and require an `S3_BUCKET` configuration.
 - Input validation and safe error handling
 - Environment-based configuration using `.env`
@@ -43,4 +44,31 @@ Completed Step 6: User Authentication & Authorization.
 - Configure PostgreSQL and S3-compatible storage in `backend/.env` before using folder or file operations.
 - File versioning, sharing permissions, and audit logging remain future work.
 
+## Run the connected frontend
 
+The React frontend uses the authenticated backend APIs for registration, sign-in, folders, file listing, search, upload, download, rename, and delete. Each request sends the signed-in user's JWT; the backend scopes folder and file queries to that account.
+
+1. Configure PostgreSQL and S3-compatible object storage. Copy `backend/.env.example` to `backend/.env`, then set `DATABASE_URL`, a private `JWT_SECRET`, and the S3 credentials/bucket. Keep `.env` private.
+2. Apply the database migrations:
+
+   ```sh
+   npm --prefix backend run db:migrate
+   ```
+
+3. Start the backend in one terminal:
+
+   ```sh
+   npm --prefix backend run dev
+   ```
+
+4. Start the frontend in another terminal:
+
+   ```sh
+   npm --prefix frontend run dev
+   ```
+
+5. Open the Vite URL shown in the terminal and create an account or sign in.
+
+Vite proxies `/api` to `http://localhost:5000` by default. To use a different backend during development, set `VITE_API_PROXY_TARGET` in `frontend/.env`. For a deployed frontend, configure its hosting server to proxy `/api` to the backend.
+
+File uploads require a working S3-compatible bucket and are limited to 25 MB. Shared drives, starred files, and trash are not yet implemented and are intentionally not shown as working features.
